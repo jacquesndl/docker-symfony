@@ -1,0 +1,4 @@
+/services/.env
+/services/db/.env
+/services/db/data
+/logs

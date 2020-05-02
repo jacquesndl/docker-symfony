@@ -1,0 +1,42 @@
+version: '3.7'
+
+volumes:
+    mariadb-data: {}
+
+services:
+    mysql:
+        image: mariadb:10.3
+        ports:
+            - "3306:3306"
+        volumes:
+            - mariadb-data:/var/lib/mysql:rw
+        env_file:
+            - services/.env
+    php:
+        build: services/php
+        volumes:
+            - ./services/php/app.ini:/usr/local/etc/php/conf.d/docker-php-ext-app.ini:ro
+            - ../application:/home/app:cached
+        working_dir: /home/app
+        links:
+            - mysql
+
+    nginx:
+        image: nginx:1
+        depends_on:
+            - php
+        volumes:
+            - ./services/nginx/app.conf:/etc/nginx/conf.d/default.conf:ro
+            - ./logs/nginx/:/var/log/nginx:cached
+            - ../application:/home/app:ro
+        ports:
+            - "80:80"
+    mailcatcher:
+        image: schickling/mailcatcher
+        ports:
+            - "1080:1080"
+    adminer:
+        build: services/adminer
+        restart: always
+        ports:
+          - "8080:8080"
