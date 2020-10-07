@@ -5,6 +5,10 @@ Docker starter kit for project bases on symfony latest version
 - [docker](https://docs.docker.com/install/)
 - [fabric](http://www.fabfile.org/installing.html)
 
+For debian/ubuntu
+`apt install python3 python3-pip`
+`pip install fabric3`
+
 ## create project
 ```bash
 wget https://github.com/jacquesndl/docker-symfony/archive/master.zip
